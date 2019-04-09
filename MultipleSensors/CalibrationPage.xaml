@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MultipleSensors" xmlns:converters="clr-namespace:MultipleSensors.Converters" x:Class="MultipleSensors.CalibrationPage">
+    <ContentPage.BindingContext>
+        <local:ViewModels.CalibrationPageViewModel /> 
+    </ContentPage.BindingContext>
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Frame Grid.Row="0" BorderColor="Red" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="20">
+            <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="Place the devices inside the red border with the visor up and the pins to the left"> </Label>
+        </Frame>
+        <Button Grid.Row="1" Text="{Binding CalibrationButtonText}" Command="{Binding CalibrateCommand}" VerticalOptions="FillAndExpand" BorderRadius="50" BackgroundColor="{Binding State, Converter={converters:StateToColorConverter}}"></Button>
+    </Grid>  
+</ContentPage>

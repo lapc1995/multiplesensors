@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MultipleSensors" xmlns:converters="clr-namespace:MultipleSensors.Converters" x:Class="MultipleSensors.SensorPage" NavigationPage.HasBackButton="False">
+    <ContentPage.BindingContext>
+        <local:ViewModels.SensorPageViewModel x:Name="viewmodel"/> 
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems> 
+        <ToolbarItem Text="Settings" Command="{Binding GoToSettingsCommand}" IsEnabled="{Binding State, Converter={converters:StateToVisibleOnConnectedConverter}}"/>
+        <ToolbarItem Text="Files" Command="{Binding GoToFilesCommand}" IsEnabled="{Binding State, Converter={converters:StateToVisibleOnConnectedConverter}}"/>
+    </ContentPage.ToolbarItems>
+    <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All"> 
+            <StackLayout Padding="10">
+                <StackLayout>
+                <Label Text="{Binding State, Converter={converters:StateToStringConverter}}" FontSize="Large" HorizontalOptions="Center"></Label>
+                <ProgressBar Progress="{Binding SensorsConnectedPercentage}" IsVisible="{Binding State, Converter={converters:StateToVisibleOnConnectingConverter}}"> </ProgressBar> 
+                <Label Text="{Binding SensorsConnectedText}" FontSize="Medium" HorizontalOptions="Center" IsVisible="{Binding State, Converter={converters:StateToVisibleOnConnectingConverter}}"></Label>
+                <Button Text="Retry Connecting" HorizontalOptions="CenterAndExpand" IsVisible="{Binding State, Converter={converters:StateToVisibleOnError}}" Command="{Binding RetryConnectionAllCommand}"></Button>
+                </StackLayout>
+                <Grid IsVisible="{Binding State, Converter={converters:StateToVisibleOnConnectedConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100" />
+                        <RowDefinition Height="100" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Grid.Row="0" Text="{Binding RecordingButtonText}" VerticalOptions="FillAndExpand" Command="{Binding ShowPopUpCommand}" BackgroundColor="{Binding State, Converter={converters:StateToColorConverter}}"/>
+                    <Button Grid.Column="1" Grid.Row="0" Text="Start Recording    Calibration" VerticalOptions="FillAndExpand" Command="{Binding CalibrationCommand}" IsEnabled="{Binding State, Converter={converters:StateToDisabledOnRecordingConverter}}"/>
+                    <Button Grid.Column="0" Grid.Row="1" Text="Vibrate" VerticalOptions="FillAndExpand" Command="{Binding VibrateCommand}" IsEnabled="{Binding State, Converter={converters:StateToDisabledOnRecordingConverter}}"/>
+                    <Button Grid.Column="1" Grid.Row="1" Text="Flash LEDS" VerticalOptions="FillAndExpand" Command="{Binding FlashCommand}" IsEnabled="{Binding State, Converter={converters:StateToDisabledOnRecordingConverter}}"/>
+                </Grid>
+            </StackLayout>
+            <ListView ItemsSource="{Binding ConnectedSensors}" ItemTapped="HandleItemTapped" RowHeight="80">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="80" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5.5*" />
+                                    <ColumnDefinition Width="2.5*" />
+                                    <ColumnDefinition Width="2*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Serial}" VerticalOptions="Center" FontSize="Large"/>
+                                <Button Grid.Column="1" Grid.Row="0" Text="Reconnect" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" FontSize="Micro" IsVisible="{Binding State, Converter={converters:StateToVisibleOnError}}" Command="{Binding RetryConnectionCommand, Source={x:Reference viewmodel}}" CommandParameter="{Binding Serial}"></Button>
+                                <Label Grid.Column="2" Grid.Row="0" Text="{Binding State, Converter={converters:StateToStringConverter}}" VerticalOptions="Center" HorizontalTextAlignment="End" />
+                            </Grid>
+                        </ViewCell>      
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <ContentView BackgroundColor="#C0808080" Padding="10, 0" IsVisible="{Binding ShowPopUp}" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <StackLayout Orientation="Vertical" HeightRequest="150" WidthRequest="300" BackgroundColor="White">
+                    <Entry Text="{Binding Activity}" Margin="20,20,20,10" Placeholder="New Activity Name"></Entry>
+                    <Button Margin="2,0,2,0" Text="Start" Command="{Binding RecordCommand}"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ContentView>
+    </AbsoluteLayout>
+</ContentPage>

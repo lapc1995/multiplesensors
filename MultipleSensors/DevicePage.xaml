@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MultipleSensors.DevicePage" xmlns:local="clr-namespace:MultipleSensors" xmlns:converters="clr-namespace:MultipleSensors.Converters">
+    <ContentPage.BindingContext>
+        <local:ViewModels.DevicePageViewModel /> 
+    </ContentPage.BindingContext>
+    <StackLayout>
+        <StackLayout HorizontalOptions="Center" Padding="10">
+            <Label Text="{Binding Serial}" FontSize="Large" HorizontalOptions="Center"> </Label>
+            <Label Text="{Binding State, Converter={converters:StateToStringConverter}}" FontSize="Small" HorizontalOptions="Center"> </Label>
+            <Label Text="{Binding Battery, StringFormat='Battery: {0}%'}" FontSize="Small" HorizontalOptions="Center"> </Label>
+        </StackLayout>
+        <Grid IsVisible="{Binding State, Converter={converters:StateToVisibleOnConnectedConverter}}" Padding="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Text="{Binding RecordingButtonText}" VerticalOptions="FillAndExpand" Command="{Binding RecordCommand}" BackgroundColor="{Binding State, Converter={converters:StateToColorConverter}}"/>
+            <Button Grid.Column="1" Text="Start Recording    Calibration" VerticalOptions="FillAndExpand" IsEnabled="{Binding State, Converter={converters:StateToDisabledOnRecordingConverter}}"/>
+        </Grid>
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackOnBuild>true</PackOnBuild>
+    <Authors>Gerard Wilkinson</Authors>
+    <Description>OpenMovement AxLE Core Comms layer.</Description>
+    <PackageId>OpenMovement.AxLE.Comms</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <PackageLicenseUrl>https://github.com/digitalinteraction/OpenMovement-AxLE-Comms/blob/master/LICENSE</PackageLicenseUrl>
+    <Owners>Open Lab, Newcastle University</Owners>
+    <PackageProjectUrl>https://github.com/digitalinteraction/OpenMovement-AxLE-Comms</PackageProjectUrl>
+    <Summary>Use this package when you are rolling your own Bluetooth comms solution.</Summary>
+    <Title>OpenMovement AxLE Comms Layer.</Title>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD2_0;DEBUG_COMMS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Bluetooth\" />
+    <Folder Include="Commands\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Values\" />
+    <Folder Include="Commands\V2\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OpenMovement.AxLE.Service\OpenMovement.AxLE.Service.csproj" />
+  </ItemGroup>
+</Project>

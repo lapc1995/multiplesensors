@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:MultipleSensors" x:Class="MultipleSensors.FileListPage">
+    <ContentPage.BindingContext>
+        <local:ViewModels.FileListPageViewModel x:Name="viewmodel"/> 
+    </ContentPage.BindingContext>
+    <StackLayout>
+        <ListView ItemsSource="{Binding FileList}" HasUnevenRows="true">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout HorizontalOptions="Center">
+                            <Label Text= "{Binding Name}" FontSize="Large" TextColor="Black"></Label>
+                            <Label Text= "{Binding Path}" FontSize="Small" TextColor="Black"></Label>
+                            <Button Text="Share" Command="{Binding ShareCommand, Source={x:Reference viewmodel}}" CommandParameter="{Binding Path}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>    
+        </ListView>    
+    </StackLayout>
+</ContentPage>
